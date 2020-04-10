@@ -28,8 +28,8 @@ const int not_end = 88;
 const bool ai_turn = true;
 const bool player_turn = false;
 
-const int PLAYER = 100;
-const int COMP = -100;
+const int PLAYER = -100;
+const int COMP = 100;
 const int DRAW = 0;
 
 string player_symbol[7] = { "  *     *  " ,
