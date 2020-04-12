@@ -22,15 +22,11 @@ short h = (lines - 1 - grid.Y) / field_size;
 const int empty_sign = -1;
 const int x_sign = 1;
 const int o_sign = 0;
-const int draw = 666;
-const int not_end = 88;
+const int draw_value = 666;
+const int no_winner = 88;
 
 const bool ai_turn = true;
 const bool player_turn = false;
-
-const int PLAYER = -100;
-const int COMP = 100;
-const int DRAW = 0;
 
 string player_symbol[7] = { "  *     *  " ,
 							"   *   *   " ,
@@ -48,4 +44,4 @@ string comp_symbol[7] = { "  *******  " ,
 							"  *******  " };
 
 enum colors { FULL_WHITE = 255, WHITE = 7, RED = 12, BLUE = 9, GREEN = 10, YELLOW = 14 };
-//enum scores { PLAYER = 100, COMP = -100, DRAW = 0 };
+enum scores { PLAYER = -100, COMP = 100, DRAW = 0 };

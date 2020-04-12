@@ -2,8 +2,8 @@
 
 int field[field_size][field_size];
 
-int player = x_sign;
-int comp = o_sign;
+int player_sign = x_sign;
+int comp_sign = o_sign;
 
 string difficulty = "EASY";
 
@@ -86,16 +86,16 @@ void print_info() {
 		set_cursor(temp, WHITE);
 	cout << "EXIT";
 	temp.X = info.X;
-	temp.Y+=2;
+	temp.Y += 2;
 	set_cursor(temp, WHITE);
 	cout << "GAME DIFFICULTY: ";
-	temp.X+=18;
-	if(difficulty == "EASY")
+	temp.X += 18;
+	if (difficulty == "EASY")
 		set_cursor(temp, GREEN);
-	else 
+	else
 		set_cursor(temp, WHITE);
 	cout << "EASY";
-	temp.X+=7;
+	temp.X += 7;
 	if (difficulty == "MID")
 		set_cursor(temp, GREEN);
 	else
@@ -115,7 +115,7 @@ void print_game_info() {
 	set_cursor(temp, WHITE);
 	cout << "GAME";
 	temp.X = info.X;
-	temp.Y+=2;
+	temp.Y += 2;
 	set_cursor(temp, WHITE);
 	cout << "GAME DIFFICULTY: ";
 	temp.X += 18;
@@ -135,10 +135,10 @@ void repaint() {
 		for (short j = 0; j < field_size; j++)
 		{
 			temp = { (grid.X + j * w + j + (short)1), (grid.Y + i * h + (short)1) };
-			if (field[i][j] == player) {
+			if (field[i][j] == player_sign) {
 				print_x(temp);
 			}
-			else if (field[i][j] == comp) {
+			else if (field[i][j] == comp_sign) {
 				print_o(temp);
 			}
 		}
@@ -154,7 +154,7 @@ void mode_choose() {
 	DWORD read_event;
 
 	bool flag = false;
-	
+
 	while (true)
 	{
 		ReadConsoleInput(handle_in, all_events, events_count, &read_event);
@@ -191,7 +191,7 @@ void mode_choose() {
 				else if (c.Y == info.Y && c.X >= cols - 5 && c.X <= cols - 2) {
 					exit(0);
 				}
-				
+
 			}
 		}
 		if (flag) {
@@ -201,84 +201,145 @@ void mode_choose() {
 	}
 }
 
-void shuffle(int arr[]) {
-	for (int i = 0; i < field_size; i++)
-	{
-		arr[i] = rand() % 1000;
-	}
-}
+//void shuffle(int arr[]) {
+//	for (int i = 0; i < field_size; i++)
+//	{
+//		arr[i] = rand() % 1000;
+//	}
+//}
 
-bool is_array_equal(int arr[]) {
+//bool is_array_equal(int arr[]) {
+//	for (int i = 0; i < field_size; i++)
+//	{
+//		for (int j = i + 1; j < field_size; j++)
+//		{
+//			if (arr[i] != arr[j])
+//				return false;
+//		}
+//	}
+//	return true;
+//}
+
+//check for the end situations
+int get_state() {
+	//check rows
 	for (int i = 0; i < field_size; i++)
 	{
-		for (int j = i + 1; j < field_size; j++)
+		for (int j = 1; j < field_size; j++)
 		{
-			if (arr[i] != arr[j])
-				return false;
+			if (field[i][j] != field[i][j - 1] || field[i][j] == empty_sign || field[i][j - 1] == empty_sign)
+			{
+				break;
+			}
+			if (j == field_size - 1) 
+			{
+				return field[i][j];
+			}
 		}
 	}
-	return true;
-}
 
-bool is_draw() {
+	//check columns
+	for (int j = 0; j < field_size; j++)
+	{
+		for (int i = 1; i < field_size; i++)
+		{
+			if (field[i][j] != field[i - 1][j] || field[i][j] == empty_sign || field[i - 1][j] == empty_sign)
+			{
+				break;
+			}
+			if (i == field_size - 1)
+			{
+				return field[i][j];
+			}
+		}
+	}
+	
+	//check main diagonal
+	for (int i = 1; i < field_size; i++)
+	{
+		if (field[i][i] != field[i - 1][i - 1] || field[i][i] == empty_sign || field[i - 1][i - 1] == empty_sign)
+		{
+			break;
+		}
+		if (i == field_size - 1)
+		{
+			return field[i][i];
+		}
+	}
+
+	//check side diagonal
+	for (int i = 1; i < field_size; i++)
+	{
+		if (field[i][field_size - 1 - i] != field[i - 1][field_size - i] || field[i][field_size - 1 - i] == empty_sign
+			|| field[i - 1][field_size - i] == empty_sign)
+		{
+			break;
+		}
+		if (i == field_size - 1)
+		{
+			return field[i][field_size - 1 - i];
+		}
+	}
+	
+	//check for tie
 	for (int i = 0; i < field_size; i++)
 	{
 		for (int j = 0; j < field_size; j++)
 		{
 			if (field[i][j] == empty_sign)
-				return false;
+				return no_winner;
 		}
 	}
-	return true;
+	return draw_value;
 }
 
-int is_end() {
-	for (int i = 0; i < field_size; i++)
-	{
-		int gorizontal[field_size];
-		shuffle(gorizontal);
-		for (int j = 0; j < field_size; j++)
-		{
-			if (field[i][j] != empty_sign)
-				gorizontal[j] = field[i][j];
-		}
-		if (is_array_equal(gorizontal))
-			return gorizontal[0];
-	}
-	for (int j = 0; j < field_size; j++)
-	{
-		int vertical[field_size];
-		shuffle(vertical);
-		for (int i = 0; i < field_size; i++)
-		{
-			if (field[i][j] != empty_sign)
-				vertical[i] = field[i][j];
-		}
-		if (is_array_equal(vertical))
-			return vertical[0];
-	}
-	int main_diagonal[field_size];
-	shuffle(main_diagonal);
-	for (int i = 0; i < field_size; i++)
-	{
-		if (field[i][i] != empty_sign)
-			main_diagonal[i] = field[i][i];
-		if (is_array_equal(main_diagonal))
-			return main_diagonal[0];
-	}
-	int side_diagonal[field_size];
-	shuffle(side_diagonal);
-	for (int i = 0; i < field_size; i++)
-	{
-		if (field[i][field_size - 1 - i] != empty_sign)
-			side_diagonal[i] = field[i][field_size - 1 - i];
-		if (is_array_equal(side_diagonal))
-			return side_diagonal[0];
-	}
-	if (is_draw())
-		return draw;
-	return not_end;
-}
+//int is_end() {
+//	for (int i = 0; i < field_size; i++)
+//	{
+//		int gorizontal[field_size];
+//		//shuffle(gorizontal);
+//		for (int j = 0; j < field_size; j++)
+//		{
+//			if (field[i][j] != empty_sign)
+//				gorizontal[j] = field[i][j];
+//		}
+//		if (is_array_equal(gorizontal))
+//			return gorizontal[0];
+//	}
+//	for (int j = 0; j < field_size; j++)
+//	{
+//		int vertical[field_size];
+//		//shuffle(vertical);
+//		for (int i = 0; i < field_size; i++)
+//		{
+//			if (field[i][j] != empty_sign)
+//				vertical[i] = field[i][j];
+//		}
+//		if (is_array_equal(vertical))
+//			return vertical[0];
+//	}
+//	int main_diagonal[field_size];
+//	//shuffle(main_diagonal);
+//	for (int i = 0; i < field_size; i++)
+//	{
+//		if (field[i][i] != empty_sign)
+//			main_diagonal[i] = field[i][i];
+//		if (is_array_equal(main_diagonal))
+//			return main_diagonal[0];
+//	}
+//	int side_diagonal[field_size];
+//	//shuffle(side_diagonal);
+//	for (int i = 0; i < field_size; i++)
+//	{
+//		if (field[i][field_size - 1 - i] != empty_sign)
+//			side_diagonal[i] = field[i][field_size - 1 - i];
+//		if (is_array_equal(side_diagonal))
+//			return side_diagonal[0];
+//	}
+//	if (is_draw())
+//		return draw;
+//	return not_end;
+//}
 
 void player_move() {
 	HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
@@ -299,48 +360,48 @@ void player_move() {
 
 			if (all_events[i].Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 			{
-				if (c.Y > grid.Y&& c.Y < grid.Y + h && c.X > grid.X&& c.X <= grid.X + w && field[0][0] == empty_sign) {
-					field[0][0] = player;
+				if (c.Y > grid.Y && c.Y < grid.Y + h && c.X > grid.X && c.X <= grid.X + w && field[0][0] == empty_sign) {
+					field[0][0] = player_sign;
 					flag = true;
 					break;
 				}
-				else if (c.Y > grid.Y&& c.Y < grid.Y + h && c.X > grid.X + w + 1 && c.X <= grid.X + 2 * w + 1 && field[0][1] == empty_sign) {
-					field[0][1] = player;
+				else if (c.Y > grid.Y && c.Y < grid.Y + h && c.X > grid.X + w + 1 && c.X <= grid.X + 2 * w + 1 && field[0][1] == empty_sign) {
+					field[0][1] = player_sign;
 					flag = true;
 					break;
 				}
-				else if (c.Y > grid.Y&& c.Y < grid.Y + h && c.X > grid.X + 2 * w + 2 && c.X < cols - 2 && field[0][2] == empty_sign) {
-					field[0][2] = player;
+				else if (c.Y > grid.Y && c.Y < grid.Y + h && c.X > grid.X + 2 * w + 2 && c.X < cols - 2 && field[0][2] == empty_sign) {
+					field[0][2] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + h && c.Y < grid.Y + 2 * h && c.X > grid.X && c.X <= grid.X + w && field[1][0] == empty_sign) {
-					field[1][0] = player;
+					field[1][0] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + h && c.Y < grid.Y + 2 * h && c.X > grid.X + w + 1 && c.X <= grid.X + 2 * w + 1 && field[1][1] == empty_sign) {
-					field[1][1] = player;
+					field[1][1] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + h && c.Y < grid.Y + 2 * h && c.X > grid.X + 2 * w + 2 && c.X < cols - 2 && field[1][2] == empty_sign) {
-					field[1][2] = player;
+					field[1][2] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + 2 * h && c.Y < lines - 2 && c.X > grid.X && c.X <= grid.X + w && field[2][0] == empty_sign) {
-					field[2][0] = player;
+					field[2][0] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + 2 * h && c.Y < lines - 2 && c.X > grid.X + w + 1 && c.X <= grid.X + 2 * w + 1 && field[2][1] == empty_sign) {
-					field[2][1] = player;
+					field[2][1] = player_sign;
 					flag = true;
 					break;
 				}
 				else if (c.Y > grid.Y + 2 * h && c.Y < lines - 2 && c.X > grid.X + 2 * w + 2 && c.X < cols - 2 && field[2][2] == empty_sign) {
-					field[2][2] = player;
+					field[2][2] = player_sign;
 					flag = true;
 					break;
 				}
@@ -363,23 +424,25 @@ void random_choose() {
 				last_i = i;
 				last_j = j;
 				if (rand() % 2) {
-					field[i][j] = comp;
+					field[i][j] = comp_sign;
 					return;
 				}
 			}
 		}
 	}
-	field[last_i][last_j] = comp;
+	field[last_i][last_j] = comp_sign;
 	return;
 }
 
 int minimax(int depth, bool is_AI_turn) {
-	if (is_end() == player)
-		return PLAYER;
-	else if (is_end() == comp)
-		return COMP;
-	else if (is_end() == draw)
-		return DRAW;
+	int winner = get_state();
+
+	if (winner == player_sign)
+		return scores::PLAYER;
+	else if (winner == comp_sign)
+		return scores::COMP;
+	else if (winner == draw_value)
+		return scores::DRAW;
 
 	if (is_AI_turn) {
 		int best_score = INT_MIN;
@@ -388,8 +451,8 @@ int minimax(int depth, bool is_AI_turn) {
 			for (int j = 0; j < field_size; j++)
 			{
 				if (field[i][j] == empty_sign) {
-					field[i][j] = comp;
-					int score = minimax(depth + 1, player_turn);
+					field[i][j] = comp_sign;
+					int score = minimax(depth + 1, !is_AI_turn);
 					field[i][j] = empty_sign;
 					best_score = max(best_score, score);
 				}
@@ -404,8 +467,8 @@ int minimax(int depth, bool is_AI_turn) {
 			for (int j = 0; j < field_size; j++)
 			{
 				if (field[i][j] == empty_sign) {
-					field[i][j] = player;
-					int score = minimax(depth + 1, ai_turn);
+					field[i][j] = player_sign;
+					int score = minimax(depth + 1, !is_AI_turn);
 					field[i][j] = empty_sign;
 					best_score = min(best_score, score);
 				}
@@ -427,7 +490,7 @@ void comp_move() {
 			for (int j = 0; j < field_size; j++)
 			{
 				if (field[i][j] == empty_sign) {
-					field[i][j] = comp;
+					field[i][j] = comp_sign;
 					int score = minimax(0, player_turn);
 					field[i][j] = empty_sign;
 					if (score > best_score) {
@@ -438,45 +501,69 @@ void comp_move() {
 				}
 			}
 		}
-		field[move.Y][move.X] = comp;
+		field[move.Y][move.X] = comp_sign;
 	}
 }
 
 void gameover(int winner) {
 	string s;
-	if (winner == player) {
+	if (winner == player_sign) {
 		s = "YOU WON!";
 	}
-	else if (winner == comp)
+	else if (winner == comp_sign)
 		s = "YOU LOST!";
-	else if (winner == draw)
+	else if (winner == draw_value)
 		s = "IT'S A TIE!";
-	else if (winner == not_end)
+	else if (winner == no_winner)
 		return;
 	MessageBoxA(0, s.c_str(), "GAMEOVER", MB_OK);
 	system("cls");
 	exit(0);
 }
 
+//int next_move(int last_move) {
+//	if (last_move == player_sign)
+//		return comp_sign;
+//	else
+//		return player_sign;
+//}
 
+void move(int* last_move) {
+	if (*last_move == player_sign)
+	{
+		comp_move();
+		*last_move = comp_sign;
+	}
+	else
+	{
+		player_move();
+		*last_move = player_sign;
+	}
+}
 
 
 
 
 
 void game() {
+	int winner = no_winner;
+	int last_move = comp_sign;
+	int* plast_move = &last_move;
+
+	start_filling();
+
 	print_info();
 	mode_choose();
 	print_grid();
 
-	while (true) {
-		player_move();
+	while (winner == no_winner)
+	{
+		move(plast_move);
 		repaint();
-		gameover(is_end());
-		comp_move();
-		repaint();
-		gameover(is_end());
+		winner = get_state();
 	}
+
+	gameover(winner);
 }
 
 
