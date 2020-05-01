@@ -1,13 +1,8 @@
-#include "functions.h"
+#include "gameCore.h"
+#include "IO.h"
 
-int main() {
+int main()
+{
 	init();
-
-	start_filling();
-
-	hide_cursor();
-
 	game();
-
-	system("pause < NUL");
 }

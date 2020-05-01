@@ -20,10 +20,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions.h">
+    <ClInclude Include="constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="constants.h">
+    <ClInclude Include="IO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optionsMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aboutGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
