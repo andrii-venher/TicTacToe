@@ -16,13 +16,13 @@ void set_cursor_color(int color);
 void fill_grid_positions();
 void print_grid();
 
-void print_sign(COORD t, signs sign);
+void print_sign(COORD t, Signs sign);
 void repaint_field();
 void print_info();
 
-string convert_turn_to_string(turns t);
-char convert_sign_to_char(signs sign);
-string convert_difficulty_to_string(difficulties diff);
+string convert_turn_to_string(Turns t);
+char convert_sign_to_char(Signs sign);
+string convert_difficulty_to_string(Difficulties diff);
 
 //sets initial screen settings, hides cursor and sets random number function
 void init()
@@ -95,9 +95,9 @@ void print_grid()
 }
 
 //prints passed sign on a field
-void print_sign(COORD t, signs sign)
+void print_sign(COORD t, Signs sign)
 {
-	if (sign == signs::X_SIGN)
+	if (sign == Signs::X_SIGN)
 	{
 		set_cursor_color(RED);
 		for (int i = 0; i < IMAGE_HEIGHT; i++)
@@ -107,7 +107,7 @@ void print_sign(COORD t, signs sign)
 			t.Y++;
 		}
 	}
-	else if (sign == signs::O_SIGN)
+	else if (sign == Signs::O_SIGN)
 	{
 		set_cursor_color(BLUE);
 		for (int i = 0; i < IMAGE_HEIGHT; i++)
@@ -117,7 +117,7 @@ void print_sign(COORD t, signs sign)
 			t.Y++;
 		}
 	}
-	else if (sign == signs::HINT)
+	else if (sign == Signs::HINT)
 	{
 		set_cursor_color(FULL_YELLOW);
 		for (int i = 0; i < IMAGE_HEIGHT; i++)
@@ -127,7 +127,7 @@ void print_sign(COORD t, signs sign)
 			t.Y++;
 		}
 	}
-	else if (sign == signs::EMPTY_SIGN)
+	else if (sign == Signs::EMPTY_SIGN)
 	{
 		set_cursor_color(WHITE);
 		for (int i = 0; i < IMAGE_HEIGHT; i++)
@@ -179,21 +179,21 @@ void print_info()
 }
 
 //converts whos first turn to string
-string convert_turn_to_string(turns t)
+string convert_turn_to_string(Turns t)
 {
 	switch (t)
 	{
 	case PLAYER_TURN:
-		return "PLAYER";
+		return "PLAYER\n";
 	case COMP_TURN:
-		return "COMPUTER";
+		return "COMPUTER\n";
 	default:
 		break;
 	}
 }
 
 //converts sign to a char
-char convert_sign_to_char(signs sign)
+char convert_sign_to_char(Signs sign)
 {
 	switch (sign)
 	{
@@ -207,19 +207,55 @@ char convert_sign_to_char(signs sign)
 }
 
 //converts difficulty to a string
-string convert_difficulty_to_string(difficulties difficulty)
+string convert_difficulty_to_string(Difficulties difficulty)
 {
 	switch (difficulty)
 	{
 	case EASY:
-		return "EASY";
+		return "EASY\n";
 	case MID:
-		return "MID";
+		return "MID\n";
 	case HARD:
-		return "HARD";
+		return "HARD\n";
 	default:
 		break;
 	}
+}
+
+bool convert_char_to_bool(char c)
+{
+	if (c == 't')
+		return true;
+	else if (c == 'f')
+		return false;
+}
+
+bool compare_str(string s1, string s2)
+{
+	for (int i = 0; i < s1.length(); i++)
+	{
+		if (s1[i] == '\n')
+			s1[i] = '\0';
+		s1[i] = tolower(s1[i]);
+	}
+	for (int i = 0; i < s2.length(); i++)
+	{
+		if (s2[i] == '\n')
+			s2[i] = '\0';
+		s2[i] = tolower(s2[i]);
+	}
+	if (s1 == s2)
+		return true;
+	else
+		return false;
+}
+
+bool compare_str(string s1, char s2)
+{
+	string t;
+	t.push_back(s2);
+	t.push_back('\n');
+	return compare_str(s1, t);
 }
 
 

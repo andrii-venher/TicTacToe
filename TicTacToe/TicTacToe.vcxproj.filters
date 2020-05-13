@@ -35,11 +35,22 @@
     <ClInclude Include="gameCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aboutGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gameMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="titresMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="options_menu.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="titres_menu.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

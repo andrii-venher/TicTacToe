@@ -7,8 +7,8 @@
 #include "constants.h"
 #include "settings.h"
 #include "optionsMenu.h"
-#include "gameMenu.h"
-#include "aboutGame.h"
+
+#include "titresMenu.h"
 #include "IO.h"
 
 using namespace std;
@@ -18,7 +18,7 @@ void clear_field();
 void move(int& last_move);
 void computer_move();
 COORD random_choice();
-COORD best_choice(turns t, signs sign);
+COORD best_choice(Turns t, Signs sign);
 int minimax(int depth, bool is_comp_turn);
 
 void start_mouse_track();
@@ -29,10 +29,12 @@ int get_state();
 void gameover(int state);
 
 COORD convert_indexes_to_coordinates(COORD move);
-states convert_to_state(signs sign);
+States convert_to_state(Signs sign);
 
 void game();
 void play_match();
+
+#include "gameMenu.h"
 
 //fills field with empty values
 void clear_field() 
@@ -47,19 +49,19 @@ void clear_field()
 }
 
 //convertes value of place to a state of game
-states convert_to_state(signs sign)
+States convert_to_state(Signs sign)
 {
 	if (sign == empty_value)
 	{
-	return states::NOT_END;
+	return States::NOT_END;
 	}
 	else if (sign == player_value)
 	{
-		return states::PLAYER_WON;
+		return States::PLAYER_WON;
 	}
 	else if (sign == comp_value)
 	{
-		return states::COMP_WON;
+		return States::COMP_WON;
 	}
 	
 }
@@ -141,20 +143,20 @@ int get_state() {
 				return convert_to_state(field[i][j]);
 		}
 	}
-	return states::DRAW_STATE;
+	return States::DRAW_STATE;
 }
 
 //makes a move depending on who moved before
 void move(int& last_move) {
-	if (last_move == turns::PLAYER_TURN)
+	if (last_move == Turns::PLAYER_TURN)
 	{
 		computer_move();
-		last_move = turns::COMP_TURN;
+		last_move = Turns::COMP_TURN;
 	}
 	else
 	{
 		start_mouse_track();
-		last_move = turns::PLAYER_TURN;
+		last_move = Turns::PLAYER_TURN;
 	}
 }
 
@@ -235,13 +237,13 @@ void get_hint()
 		hints--;
 		print_info();
 		COORD move;
-		move = best_choice(turns::PLAYER_TURN, player_value);
+		move = best_choice(Turns::PLAYER_TURN, player_value);
 		for (int i = 0; i < 3; i++)
 		{
-			print_sign(convert_indexes_to_coordinates(move), signs::HINT);
-			Sleep(200);
-			print_sign(convert_indexes_to_coordinates(move), signs::EMPTY_SIGN);
-			Sleep(200);
+			print_sign(convert_indexes_to_coordinates(move), Signs::HINT);
+			Sleep(150);
+			print_sign(convert_indexes_to_coordinates(move), Signs::EMPTY_SIGN);
+			Sleep(150);
 		}
 	}
 }
@@ -250,11 +252,11 @@ void get_hint()
 void computer_move()
 {
 	COORD move;
-	if (difficulty == difficulties::EASY)
+	if (difficulty == Difficulties::EASY)
 	{
 		move = random_choice();
 	}
-	else if (difficulty == difficulties::MID)
+	else if (difficulty == Difficulties::MID)
 	{
 		if (rand() % 2)
 		{
@@ -262,12 +264,12 @@ void computer_move()
 		}
 		else
 		{
-			move = best_choice(turns::COMP_TURN, comp_value);
+			move = best_choice(Turns::COMP_TURN, comp_value);
 		}
 	}
-	else if (difficulty == difficulties::HARD)
+	else if (difficulty == Difficulties::HARD)
 	{
-		move = best_choice(turns::COMP_TURN, comp_value);
+		move = best_choice(Turns::COMP_TURN, comp_value);
 	}
 	field[move.Y][move.X] = comp_value;
 }
@@ -309,11 +311,11 @@ COORD random_choice() {
 }
 
 //retruns preferable place
-COORD best_choice(turns t, signs sign)
+COORD best_choice(Turns t, Signs sign)
 {
 	COORD move;
 	int best_score; 
-	if (t == turns::COMP_TURN)
+	if (t == Turns::COMP_TURN)
 	{
 		best_score = INT_MIN;
 		for (int i = 0; i < FIELD_SIZE; i++)
@@ -360,12 +362,12 @@ COORD best_choice(turns t, signs sign)
 int minimax(int depth, bool is_comp_turn) {
 	int state = get_state();
 
-	if (state == states::PLAYER_WON)
-		return scores::PLAYER_SCORE;
-	else if (state == states::COMP_WON)
-		return scores::COMP_SCORE;
-	else if (state == states::DRAW_STATE)
-		return scores::DRAW_SCORE;
+	if (state == States::PLAYER_WON)
+		return Scores::PLAYER_SCORE;
+	else if (state == States::COMP_WON)
+		return Scores::COMP_SCORE;
+	else if (state == States::DRAW_STATE)
+		return Scores::DRAW_SCORE;
 
 	if (is_comp_turn) {
 		int best_score = INT_MIN;
@@ -403,24 +405,24 @@ int minimax(int depth, bool is_comp_turn) {
 
 //after reaching of end situation shows a winner or a draw in message box and calls a new game
 void gameover(int state) {
-	if (state == states::NOT_END)
+	if (state == States::NOT_END)
 	{
 		return;
 	}
 	
 	string s;
 	
-	if (state == states::PLAYER_WON) 
+	if (state == States::PLAYER_WON) 
 	{
 		s = "YOU WON!";
 		player_points++;
 	}
-	else if (state == states::COMP_WON)
+	else if (state == States::COMP_WON)
 	{
 		s = "YOU LOST!";
 		comp_points++;
 	}
-	else if (state == states::DRAW_STATE)
+	else if (state == States::DRAW_STATE)
 	{
 		s = "IT'S A DRAW!";
 	}
@@ -434,7 +436,7 @@ void gameover(int state) {
 //starts a new match
 void play_match()
 {
-	int state = states::NOT_END;
+	int state = States::NOT_END;
 	int last_move = !whos_first_turn;
 	isMatch = true;
 	hints = 3;
@@ -444,7 +446,7 @@ void play_match()
 	repaint_field();
 	print_info();
 
-	while (state == states::NOT_END)
+	while (state == States::NOT_END)
 	{
 		move(last_move);
 		repaint_field();

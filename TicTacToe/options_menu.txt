@@ -1,0 +1,12 @@
+0fOptions
+1fDifficulty:
+1tEasy
+1tMid
+1tHard
+2fWhos Turn: 
+2tPlayer
+2tComputer
+3fChoose your sign:
+3tX
+3tO
+4tSave
