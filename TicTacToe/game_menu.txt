@@ -1,6 +1,6 @@
 0fTIC-TAC-TOE
-1tStart
-1tOptions
-1tGet a hint
-1tAbout game
+1tSTART
+1tOPTIONS
+1tGET A HINT
+1tABOUT GAME
 2f

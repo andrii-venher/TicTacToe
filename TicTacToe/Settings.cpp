@@ -4,7 +4,7 @@
 #include <ctime>
 
 #include "Settings.h"
-#include "constants.h"
+#include "Constants.h"
 
 using namespace std;
 

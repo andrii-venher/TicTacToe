@@ -1,12 +1,12 @@
-0fOptions
-1fDifficulty:
-1tEasy
-1tMid
-1tHard
-2fWhos Turn: 
-2tPlayer
-2tComputer
-3fChoose your sign:
+0fOPTIONS
+1fDIFFICULTY:
+1tEASY
+1tMID
+1tHARD
+2fWHOS TURN:
+2tPLAYER
+2tCOMPUTER
+3fCHOOSE YOUR SIGN:
 3tX
 3tO
-4tSave
+4tSAVE
