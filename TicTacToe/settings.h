@@ -8,31 +8,22 @@
 
 using namespace std;
 
-Signs field[FIELD_SIZE][FIELD_SIZE];
+extern Signs field[FIELD_SIZE][FIELD_SIZE];
 
-COORD GRID_POSITIONS[FIELD_SIZE][FIELD_SIZE];
+extern COORD grid_pos[FIELD_SIZE][FIELD_SIZE];
 
-Signs player_value = Signs::X_SIGN;
-Signs comp_value = Signs::O_SIGN;
-Signs empty_value = Signs::EMPTY_SIGN;
+extern Signs player_value;
+extern Signs computer_value;
+extern Signs empty_value;
 
-Difficulties difficulty = Difficulties::EASY;
+extern Difficulties difficulty;
 
-Turns whos_first_turn = Turns::PLAYER_TURN;
+extern Turns whos_first_turn;
 
-int player_points = 0;
-int comp_points = 0;
+extern int player_points;
+extern int computer_points;
 
-int hints = 3;
+extern int hints;
 
-bool isMatch = false;
+extern bool is_match;
 
-//menu settings
-
-const short MENU_TEXT_SHIFT = 2;
-
-const string GAME_MENU_TEXT[] = { "START", "OPTIONS", "GET A HINT", "ABOUT GAME"};
-const int GAME_MENU_ELEMENTS_AMOUNT = sizeof(GAME_MENU_TEXT) / sizeof(string);
-COORD GAME_MENU_POSITION[GAME_MENU_ELEMENTS_AMOUNT];
-const int ACTIVE_GAME_MENU_ELEMENTS_INDEXES[] = { 0, 1, 2, 3 };
-const int ACTIVE_GAME_MENU_ELEMENTS_AMOUNT = sizeof(ACTIVE_GAME_MENU_ELEMENTS_INDEXES) / sizeof(int);

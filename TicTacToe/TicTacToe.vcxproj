@@ -138,19 +138,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IO.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MouseTrack.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MouseTrack.h" />
     <ClInclude Include="titresMenu.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="gameCore.h" />
     <ClInclude Include="gameMenu.h" />
     <ClInclude Include="IO.h" />
-    <ClInclude Include="menu.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="optionsMenu.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="game_menu.txt" />
     <Text Include="titres_menu.txt" />
     <Text Include="options_menu.txt" />
   </ItemGroup>

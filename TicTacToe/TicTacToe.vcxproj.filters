@@ -18,6 +18,18 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MouseTrack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -38,10 +50,13 @@
     <ClInclude Include="gameMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
+    <ClInclude Include="titresMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="titresMenu.h">
+    <ClInclude Include="MouseTrack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -52,5 +67,6 @@
     <Text Include="titres_menu.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="game_menu.txt" />
   </ItemGroup>
 </Project>

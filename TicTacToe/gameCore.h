@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <string>
 #include <ctime>
-
+//#include "Menu.h"
 #include "constants.h"
 #include "settings.h"
 #include "optionsMenu.h"
@@ -11,17 +11,17 @@
 #include "titresMenu.h"
 #include "IO.h"
 
+#include "MouseTrack.h"
 using namespace std;
 
 void clear_field();
 
-void move(int& last_move);
 void computer_move();
 COORD random_choice();
 COORD best_choice(Turns t, Signs sign);
 int minimax(int depth, bool is_comp_turn);
 
-void start_mouse_track();
+void start_mouse_track(MenuBar mb);
 void get_hint();
 
 int get_state();
@@ -32,9 +32,9 @@ COORD convert_indexes_to_coordinates(COORD move);
 States convert_to_state(Signs sign);
 
 void game();
-void play_match();
+void play_match(MenuBar mb);
 
-#include "gameMenu.h"
+//
 
 //fills field with empty values
 void clear_field() 
@@ -59,7 +59,7 @@ States convert_to_state(Signs sign)
 	{
 		return States::PLAYER_WON;
 	}
-	else if (sign == comp_value)
+	else if (sign == computer_value)
 	{
 		return States::COMP_WON;
 	}
@@ -69,7 +69,7 @@ States convert_to_state(Signs sign)
 //convertes indexes of field array to coordinates of screen
 COORD convert_indexes_to_coordinates(COORD move)
 {
-	return GRID_POSITIONS[move.Y][move.X];
+	return grid_pos[move.Y][move.X];
 }
 
 //returns state of a match
@@ -146,83 +146,49 @@ int get_state() {
 	return States::DRAW_STATE;
 }
 
-//makes a move depending on who moved before
-void move(int& last_move) {
-	if (last_move == Turns::PLAYER_TURN)
-	{
-		computer_move();
-		last_move = Turns::COMP_TURN;
-	}
-	else
-	{
-		start_mouse_track();
-		last_move = Turns::PLAYER_TURN;
-	}
-}
-
 //tracks all player mouse actions (moves, clicks on buttons)
-void start_mouse_track()
+void start_mouse_track(MenuBar mb)
 {
-	HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
-	SetConsoleMode(handle_in, ENABLE_MOUSE_INPUT | ENABLE_EXTENDED_FLAGS);
-	const int events_count = 256;
-	INPUT_RECORD all_events[events_count];
-	DWORD read_event;
-
-	COORD c;
-
+	COORD click;
 	while (true)
 	{
-		ReadConsoleInput(handle_in, all_events, events_count, &read_event);
-		for (int event_index = 0; event_index < read_event; event_index++)
+		click = click_coordinate();
+		for (int i = 0; i < FIELD_SIZE; i++)
 		{
-			c.X = all_events[event_index].Event.MouseEvent.dwMousePosition.X;
-			c.Y = all_events[event_index].Event.MouseEvent.dwMousePosition.Y;
-
-			if (all_events[event_index].Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+			for (int j = 0; j < FIELD_SIZE; j++)
 			{
-				for (int i = 0; i < FIELD_SIZE; i++)
+				if (click.X >= grid_pos[i][j].X && click.X <= grid_pos[i][j].X + IMAGE_WIDTH &&
+					click.Y >= grid_pos[i][j].Y && click.Y <= grid_pos[i][j].Y + IMAGE_HEIGHT &&
+					field[i][j] == empty_value)
 				{
-					for (int j = 0; j < FIELD_SIZE; j++)
-					{
-						if (c.X >= GRID_POSITIONS[i][j].X && c.X <= GRID_POSITIONS[i][j].X + IMAGE_WIDTH &&
-							c.Y >= GRID_POSITIONS[i][j].Y && c.Y <= GRID_POSITIONS[i][j].Y + IMAGE_HEIGHT &&
-							field[i][j] == empty_value)
-						{
-							field[i][j] = player_value;
-							return;
-						}
-					}
+					field[i][j] = player_value;
+					return;
 				}
-				for (int j = 0; j < GAME_MENU_ELEMENTS_AMOUNT; j++)
+			}
+		}
+		for (int j = 0; j < mb.size; j++)
+		{
+			if (click.Y == mb.mas[j].pos.Y && click.X >= mb.mas[j].pos.X && click.X < mb.mas[j].pos.X + mb.mas[j].text.length() && mb.mas[j].is_active)
+			{
+				switch (j)
 				{
-					if (c.Y == GAME_MENU_POSITION[j].Y && c.X >= GAME_MENU_POSITION[j].X && c.X < GAME_MENU_POSITION[j].X + GAME_MENU_TEXT[j].length())
-					{
-						for (int u = 0; u < ACTIVE_GAME_MENU_ELEMENTS_AMOUNT; u++)
-						{
-							if (j == ACTIVE_GAME_MENU_ELEMENTS_INDEXES[u])
-							{
-								if (j == ACTIVE_GAME_MENU_ELEMENTS_INDEXES[0])
-								{
-									play_match();
-								}
-								else if (j == ACTIVE_GAME_MENU_ELEMENTS_INDEXES[1])
-								{
-									call_options_menu();
-									game();
-								}
-								else if (j == ACTIVE_GAME_MENU_ELEMENTS_INDEXES[2] && isMatch)
-								{
-									get_hint();
-								}
-								else if (j == ACTIVE_GAME_MENU_ELEMENTS_INDEXES[3])
-								{
-									call_titres_menu();
-									game();
-								}
-							}
-						}
-					}
+				case 1:
+					play_match(mb);
+					break;
+				case 2:
+					call_options_menu();
+					game();
+					break;
+				case 3:
+					if(is_match)
+						get_hint();
+					break;
+				case 4:
+					call_titres_menu();
+					game();
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -264,14 +230,14 @@ void computer_move()
 		}
 		else
 		{
-			move = best_choice(Turns::COMP_TURN, comp_value);
+			move = best_choice(Turns::COMP_TURN, computer_value);
 		}
 	}
 	else if (difficulty == Difficulties::HARD)
 	{
-		move = best_choice(Turns::COMP_TURN, comp_value);
+		move = best_choice(Turns::COMP_TURN, computer_value);
 	}
-	field[move.Y][move.X] = comp_value;
+	field[move.Y][move.X] = computer_value;
 }
 
 //returns a random empty place
@@ -376,7 +342,7 @@ int minimax(int depth, bool is_comp_turn) {
 			for (int j = 0; j < FIELD_SIZE; j++)
 			{
 				if (field[i][j] == empty_value) {
-					field[i][j] = comp_value;
+					field[i][j] = computer_value;
 					int score = minimax(depth + 1, !is_comp_turn);
 					field[i][j] = empty_value;
 					best_score = max(best_score, score);
@@ -420,25 +386,25 @@ void gameover(int state) {
 	else if (state == States::COMP_WON)
 	{
 		s = "YOU LOST!";
-		comp_points++;
+		computer_points++;
 	}
 	else if (state == States::DRAW_STATE)
 	{
 		s = "IT'S A DRAW!";
 	}
 
-	isMatch = false;
+	is_match = false;
 	
 	MessageBoxA(0, s.c_str(), "GAMEOVER", MB_OK);
 	game();
 }
 
 //starts a new match
-void play_match()
+void play_match(MenuBar mb)
 {
 	int state = States::NOT_END;
 	int last_move = !whos_first_turn;
-	isMatch = true;
+	is_match = true;
 	hints = 3;
 
 	clear_field();
@@ -448,7 +414,16 @@ void play_match()
 
 	while (state == States::NOT_END)
 	{
-		move(last_move);
+		if (last_move == Turns::PLAYER_TURN)
+		{
+			computer_move();
+			last_move = Turns::COMP_TURN;
+		}
+		else
+		{
+			start_mouse_track(mb);
+			last_move = Turns::PLAYER_TURN;
+		}
 		repaint_field();
 		print_info();
 		state = get_state();
@@ -456,16 +431,26 @@ void play_match()
 
 	gameover(state);
 }
-
+//#include "gameMenu.h"
 //calls a new game
+
+MenuBar call_game_menu()
+{
+	string path = "game_menu.txt";
+	MenuBar mb;
+	mb.mas = new MenuElement[mb.size];
+	read_elements(mb, path);
+	print_menu(mb);
+	return mb;
+}
 void game() {
 	system("cls");
 
-	call_game_menu();
+	MenuBar game_menu = call_game_menu();
 	fill_grid_positions();
 	print_grid();
 	print_info();
-	start_mouse_track();
+	start_mouse_track(game_menu);
 }
 
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include "menu.h"
+#include "Menu.h"
 
 using namespace std;
 
@@ -27,11 +27,11 @@ bool options_action(int index)
 		break;
 	case 9:
 		player_value = Signs::X_SIGN;
-		comp_value = Signs::O_SIGN;
+		computer_value = Signs::O_SIGN;
 		break;
 	case 10:
 		player_value = Signs::O_SIGN;
-		comp_value = Signs::X_SIGN;
+		computer_value = Signs::X_SIGN;
 		break;
 	case 11:
 		return true;
@@ -44,9 +44,9 @@ bool options_action(int index)
 void call_options_menu()
 {
 	string path = "options_menu.txt";
-	int size = 0;
-	MenuElement* mas = new MenuElement[size];
-	read_elements(mas, size, path);
-	print_menu(mas, size);
-	track_mouse(mas, size, options_action);
+	MenuBar mb;
+	mb.mas = new MenuElement[mb.size];
+	read_elements(mb, path);
+	print_menu(mb);
+	track_mouse(mb, options_action);
 }

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include "menu.h"
+#include "Menu.h"
 
 using namespace std;
 
@@ -21,9 +21,9 @@ bool titres_action(int index)
 void call_titres_menu()
 {
 	string path = "titres_menu.txt";
-	int size = 0;
-	MenuElement* mas = new MenuElement[size];
-	read_elements(mas, size, path);
-	print_menu(mas, size);
-	track_mouse(mas, size, titres_action);
+	MenuBar mb;
+	mb.mas = new MenuElement[mb.size];
+	read_elements(mb, path);
+	print_menu(mb);
+	track_mouse(mb, titres_action);
 }
