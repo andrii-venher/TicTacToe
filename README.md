@@ -1,6 +1,6 @@
 # TicTacToe
 
-Its a __Tic-Tac-Toe__ game application that implements [__Minimax__](https://en.wikipedia.org/wiki/Minimax "Minimax Wikipedia") algorithm. It is written according to a procedural programming paradigm.
+__Tic-Tac-Toe__ game application on C++ that implements [__Minimax__](https://en.wikipedia.org/wiki/Minimax "Minimax Wikipedia") algorithm. It is written according to a procedural programming paradigm. IDE: Microsoft Visual Studio 2019.
 
 ### A few words about...
 
