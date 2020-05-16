@@ -1,18 +1,17 @@
 # TicTacToe
-Hello! My name is Andrey, I'm 16 and this is my first project!
 
-The game has main screen with main menu on top and game field on the middle. At the bottom of the main page is info about game and current settings.
+Its a __Tic-Tac-Toe__ game application that implements [__Minimax__](https://en.wikipedia.org/wiki/Minimax "Minimax Wikipedia") algorithm. It is written according to a procedural programming paradigm.
 
-### Main menu
+### A few words about...
 
-+ Button __"START"__ starts a new match that continues until the end situation or until any outer page is opened (options or titres)
+You can choose from three difficulties: 
 
-+ Button __"OPTIONS"__ opens an option menu where you can change difficulty, your sign and who's is the first turn.
++ __Easy:__ randomly chooses the move
++ __Mid:__ randomly chooses between __Easy__-mode and __Hard__-mode
++ __Hard__: always takes the best avaliable move ([__Minimax__](https://en.wikipedia.org/wiki/Minimax "Minimax Wikipedia") algorithm)
 
-+ Button __"GET A HINT"__ is active only during the match and shows the best move if you have at least 1 hint.
+Also you can change your sign and choose whose is the first turn. And you can get a hint (the best avaliable move) if you need.
 
-+ Button __"ABOUT GAME"__ opens short article about me.
-
-Hope you'll enjoy the game :)
-### Contacts: 
-__Telegram:__ @topvenger
+<p align="center"> 
+<img src="https://github.com/VengerAndrey/TicTacToe/blob/master/game.png">
+</p>
