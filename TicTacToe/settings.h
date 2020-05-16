@@ -24,4 +24,3 @@ extern int computer_points;
 extern int hints;
 
 extern bool is_match;
-
