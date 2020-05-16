@@ -1,43 +1,20 @@
-#pragma once
 #include <iostream>
 #include <Windows.h>
 #include <string>
 #include <ctime>
-//#include "Menu.h"
-#include "constants.h"
-#include "settings.h"
-#include "optionsMenu.h"
 
-#include "titresMenu.h"
+#include "Constants.h"
+#include "Settings.h"
 #include "IO.h"
-
 #include "MouseTrack.h"
+#include "MyMenu.h"
+#include "Menus.h"
+#include "Core.h"
+
 using namespace std;
 
-void clear_field();
-
-void computer_move();
-COORD random_choice();
-COORD best_choice(Turns t, Signs sign);
-int minimax(int depth, bool is_comp_turn);
-
-void start_mouse_track(MenuBar mb);
-void get_hint();
-
-int get_state();
-
-void gameover(int state);
-
-COORD convert_indexes_to_coordinates(COORD move);
-States convert_to_state(Signs sign);
-
-void game();
-void play_match(MenuBar mb);
-
-//
-
 //fills field with empty values
-void clear_field() 
+void clear_field()
 {
 	for (int i = 0; i < FIELD_SIZE; i++)
 	{
@@ -53,7 +30,7 @@ States convert_to_state(Signs sign)
 {
 	if (sign == empty_value)
 	{
-	return States::NOT_END;
+		return States::NOT_END;
 	}
 	else if (sign == player_value)
 	{
@@ -63,7 +40,7 @@ States convert_to_state(Signs sign)
 	{
 		return States::COMP_WON;
 	}
-	
+
 }
 
 //convertes indexes of field array to coordinates of screen
@@ -83,9 +60,9 @@ int get_state() {
 			{
 				break;
 			}
-			if (j == FIELD_SIZE - 1) 
+			if (j == FIELD_SIZE - 1)
 			{
-				
+
 				return convert_to_state(field[i][j]);
 			}
 		}
@@ -106,7 +83,7 @@ int get_state() {
 			}
 		}
 	}
-	
+
 	//check main diagonal
 	for (int i = 1; i < FIELD_SIZE; i++)
 	{
@@ -133,7 +110,7 @@ int get_state() {
 			return convert_to_state(field[i][FIELD_SIZE - 1 - i]);
 		}
 	}
-	
+
 	//check for draw
 	for (int i = 0; i < FIELD_SIZE; i++)
 	{
@@ -146,8 +123,8 @@ int get_state() {
 	return States::DRAW_STATE;
 }
 
-//tracks all player mouse actions (moves, clicks on buttons)
-void start_mouse_track(MenuBar mb)
+//tracks all player mouse actions on game screen (moves, clicks on buttons)
+void game_mouse_track(MenuBar mb)
 {
 	COORD click;
 	while (true)
@@ -176,15 +153,15 @@ void start_mouse_track(MenuBar mb)
 					play_match(mb);
 					break;
 				case 2:
-					call_options_menu();
+					open_options_menu();
 					game();
 					break;
 				case 3:
-					if(is_match)
+					if (is_match)
 						get_hint();
 					break;
 				case 4:
-					call_titres_menu();
+					open_titres_menu();
 					game();
 					break;
 				default:
@@ -243,7 +220,7 @@ void computer_move()
 //returns a random empty place
 COORD random_choice() {
 	int count = 0;
-	
+
 	for (int i = 0; i < FIELD_SIZE; i++)
 	{
 		for (int j = 0; j < FIELD_SIZE; j++)
@@ -267,7 +244,7 @@ COORD random_choice() {
 			}
 		}
 	}
-	
+
 	int index = rand() % count;
 
 	COORD move = possible_moves[index];
@@ -280,7 +257,7 @@ COORD random_choice() {
 COORD best_choice(Turns t, Signs sign)
 {
 	COORD move;
-	int best_score; 
+	int best_score;
 	if (t == Turns::COMP_TURN)
 	{
 		best_score = INT_MIN;
@@ -300,7 +277,7 @@ COORD best_choice(Turns t, Signs sign)
 				}
 			}
 		}
-	} 
+	}
 	else
 	{
 		best_score = INT_MAX;
@@ -369,16 +346,16 @@ int minimax(int depth, bool is_comp_turn) {
 	}
 }
 
-//after reaching of end situation shows a winner or a draw in message box and calls a new game
+//after reaching the end situation shows a winner or a draw in message box and calls a new game
 void gameover(int state) {
 	if (state == States::NOT_END)
 	{
 		return;
 	}
-	
+
 	string s;
-	
-	if (state == States::PLAYER_WON) 
+
+	if (state == States::PLAYER_WON)
 	{
 		s = "YOU WON!";
 		player_points++;
@@ -394,7 +371,7 @@ void gameover(int state) {
 	}
 
 	is_match = false;
-	
+
 	MessageBoxA(0, s.c_str(), "GAMEOVER", MB_OK);
 	game();
 }
@@ -421,7 +398,7 @@ void play_match(MenuBar mb)
 		}
 		else
 		{
-			start_mouse_track(mb);
+			game_mouse_track(mb);
 			last_move = Turns::PLAYER_TURN;
 		}
 		repaint_field();
@@ -431,18 +408,8 @@ void play_match(MenuBar mb)
 
 	gameover(state);
 }
-//#include "gameMenu.h"
-//calls a new game
 
-MenuBar call_game_menu()
-{
-	string path = "game_menu.txt";
-	MenuBar mb;
-	mb.mas = new MenuElement[mb.size];
-	read_elements(mb, path);
-	print_menu(mb);
-	return mb;
-}
+//calls a new game
 void game() {
 	system("cls");
 
@@ -450,7 +417,5 @@ void game() {
 	fill_grid_positions();
 	print_grid();
 	print_info();
-	start_mouse_track(game_menu);
+	game_mouse_track(game_menu);
 }
-
-

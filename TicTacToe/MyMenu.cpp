@@ -2,11 +2,11 @@
 #include <string>
 #include <Windows.h>
 
-#include "constants.h"
-#include "settings.h"
+#include "Constants.h"
+#include "Settings.h"
 #include "IO.h"
 #include "MouseTrack.h"
-#include "Menu.h"
+#include "MyMenu.h"
 
 using namespace std;
 
@@ -128,4 +128,13 @@ void track_mouse(MenuBar& mb, bool (*action)(int))
 			}
 		}
 	}
+}
+
+MenuBar call_menu(string path)
+{
+	MenuBar mb;
+	mb.mas = new MenuElement[mb.size];
+	read_elements(mb, path);
+	print_menu(mb);
+	return mb;
 }

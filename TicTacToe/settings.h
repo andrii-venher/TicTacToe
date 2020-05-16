@@ -1,10 +1,8 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
-#include <string>
-#include <ctime>
 
-#include "constants.h"
+#include "Constants.h"
 
 using namespace std;
 

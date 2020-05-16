@@ -25,4 +25,6 @@ void print_menu(MenuBar mb);
 
 void track_mouse(MenuBar& mb, bool (*action)(int));
 
+MenuBar call_menu(string path);
+
 

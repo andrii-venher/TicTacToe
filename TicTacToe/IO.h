@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <string>
 
-#include "constants.h"
+#include "Constants.h"
 
 using namespace std;
 

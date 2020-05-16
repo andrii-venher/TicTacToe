@@ -4,8 +4,8 @@
 #include <ctime>
 
 #include "IO.h"
-#include "settings.h"
-#include "constants.h"
+#include "Settings.h"
+#include "Constants.h"
 
 
 //sets initial screen settings, hides cursor and sets random number function

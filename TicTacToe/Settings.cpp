@@ -3,7 +3,7 @@
 #include <string>
 #include <ctime>
 
-#include "settings.h"
+#include "Settings.h"
 #include "constants.h"
 
 using namespace std;

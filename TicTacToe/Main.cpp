@@ -1,4 +1,4 @@
-#include "gameCore.h"
+#include "Core.h"
 #include "IO.h"
 
 int main()

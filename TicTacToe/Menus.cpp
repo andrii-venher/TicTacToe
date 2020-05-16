@@ -1,8 +1,10 @@
-#pragma once
 #include <iostream>
 #include <string>
 
-#include "Menu.h"
+#include "MyMenu.h"
+#include "Menus.h"
+#include "Settings.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -41,12 +43,31 @@ bool options_action(int index)
 	return false;
 }
 
-void call_options_menu()
+void open_options_menu()
 {
-	string path = "options_menu.txt";
-	MenuBar mb;
-	mb.mas = new MenuElement[mb.size];
-	read_elements(mb, path);
-	print_menu(mb);
+	MenuBar mb = call_menu("options_menu.txt");
 	track_mouse(mb, options_action);
+}
+
+bool titres_action(int index)
+{
+	switch (index)
+	{
+	case 2:
+		return true;
+	default:
+		break;
+	}
+	return false;
+}
+
+void open_titres_menu()
+{
+	MenuBar mb = call_menu("titres_menu.txt");
+	track_mouse(mb, titres_action);
+}
+
+MenuBar call_game_menu()
+{
+	return call_menu("game_menu.txt");
 }
