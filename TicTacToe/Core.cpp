@@ -380,7 +380,7 @@ void gameover(int state) {
 void play_match(MenuBar mb)
 {
 	int state = States::NOT_END;
-	int last_move = !whos_first_turn;
+	int last_move = !whose_first_turn;
 	is_match = true;
 	hints = 3;
 

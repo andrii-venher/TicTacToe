@@ -35,7 +35,7 @@ void read_elements(MenuBar& mb, string path)
 		mb.mas[i].is_active = convert_char_to_bool(fgetc(f));
 		fgets(temp_str, 100, f);
 		mb.mas[i].text = temp_str;
-		if (compare_str(mb.mas[i].text, convert_difficulty_to_string(difficulty)) || compare_str(mb.mas[i].text, convert_turn_to_string(whos_first_turn)) ||
+		if (compare_str(mb.mas[i].text, convert_difficulty_to_string(difficulty)) || compare_str(mb.mas[i].text, convert_turn_to_string(whose_first_turn)) ||
 			compare_str(mb.mas[i].text, convert_sign_to_char(player_value)))
 			mb.mas[i].is_pressed = true;
 		if (i == 0 || i == mb.size - 1)

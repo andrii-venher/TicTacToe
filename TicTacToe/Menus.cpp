@@ -22,10 +22,10 @@ bool options_action(int index)
 		difficulty = Difficulties::HARD;
 		break;
 	case 6:
-		whos_first_turn = Turns::PLAYER_TURN;
+		whose_first_turn = Turns::PLAYER_TURN;
 		break;
 	case 7:
-		whos_first_turn = Turns::COMP_TURN;
+		whose_first_turn = Turns::COMP_TURN;
 		break;
 	case 9:
 		player_value = Signs::X_SIGN;

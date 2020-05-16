@@ -16,7 +16,7 @@ extern Signs empty_value;
 
 extern Difficulties difficulty;
 
-extern Turns whos_first_turn;
+extern Turns whose_first_turn;
 
 extern int player_points;
 extern int computer_points;

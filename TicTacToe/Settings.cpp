@@ -18,7 +18,7 @@ Signs empty_value = Signs::EMPTY_SIGN;
 
 Difficulties difficulty = Difficulties::EASY;
 
-Turns whos_first_turn = Turns::PLAYER_TURN;
+Turns whose_first_turn = Turns::PLAYER_TURN;
 
 int player_points = 0;
 int computer_points = 0;
